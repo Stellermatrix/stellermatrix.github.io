@@ -6,13 +6,45 @@
     <link rel="shortcut icon" href="icon.png">
     <title>STELLER-MATRIX</title>
     <style>
+        /* 基础样式 */
         body {
             background-color: #0c0c0c;
             color: #ffffff;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
+            overflow: hidden; /* 防止滚动条 */
         }
+
+        /* 代码瀑布容器 */
+        .code-fall {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* 将代码瀑布放在背景 */
+            overflow: hidden;
+        }
+
+        /* 代码片段样式 */
+        .code-fall span {
+            position: absolute;
+            top: -50px;
+            color: #00ff00; /* 绿色代码 */
+            font-size: 16px;
+            white-space: nowrap;
+            animation: fall linear infinite;
+        }
+
+        /* 代码下落动画 */
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        /* 其他原有样式 */
         header {
             background-color: #1a1a1a;
             padding: 20px;
@@ -77,6 +109,10 @@
     </style>
 </head>
 <body>
+    <!-- 代码瀑布容器 -->
+    <div class="code-fall"></div>
+
+    <!-- 网站内容 -->
     <header>
         <h1>STELLER-MATRIX</h1>
         <p>无尽矩阵</p>
@@ -110,5 +146,33 @@
     <footer>
         <p>&copy; STELLER-MATRIX. 未经授权禁止访问.</p>
     </footer>
+
+    <!-- JavaScript 实现代码瀑布 -->
+    <script>
+        const codeFall = document.querySelector('.code-fall');
+
+        function createCode() {
+            const span = document.createElement('span');
+            span.textContent = generateRandomCode();
+            span.style.left = Math.random() * window.innerWidth + 'px';
+            span.style.animationDuration = Math.random() * 5 + 3 + 's';
+            codeFall.appendChild(span);
+
+            setTimeout(() => {
+                span.remove();
+            }, 8000); // 移除超出屏幕的代码
+        }
+
+        function generateRandomCode() {
+            const characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;:,.<>?';
+            let code = '';
+            for (let i = 0; i < Math.floor(Math.random() * 20 + 10); i++) {
+                code += characters[Math.floor(Math.random() * characters.length)];
+            }
+            return code;
+        }
+
+        setInterval(createCode, 300); // 每300ms生成一个新的代码片段
+    </script>
 </body>
 </html>
